@@ -16,27 +16,45 @@ const Hello = ({ nome, idade }) => {
   );
 };
 
-// props=argumentos, dentro do componenete lidamos com a nomeclatura de cada
-const Exibir = ({ contador }) => {
-  return <div>{contador}</div>;
+const Historico = (props) => {
+  if (props.todosOsCliques.length === 0) {
+    return <div>Clique em um dos botões para usar a aplicação!</div>;
+  }
+  return (
+    <div>Histórico de cliques nos botões: {props.todosOsCliques.join(" ")}</div>
+  );
 };
 
-const Botao = ({ onClick, texto }) => {
-  return <button onClick={onClick}>{texto}</button>;
-};
+const Botao = ({ handleClique, texto }) => (
+  <button onClick={handleClique}>{texto}</button>
+);
 
 const App = () => {
-  const [contador, setContador] = useState(0);
+  const [esquerda, setEsquerda] = useState(0);
+  const [direita, setDireita] = useState(0);
+  const [todosOsCliques, setTodos] = useState([]);
+  const [total, setTotal] = useState(0);
 
-  const aumentarEmUm = () => setContador(contador + 1);
-  const diminuirEmUm = () => setContador(contador - 1);
-  const zerarContador = () => setContador(0);
+  const handleCliqueEsquerda = () => {
+    setTodos(todosOsCliques.concat("E"));
+    const atualizaEsquerda = esquerda + 1;
+    setEsquerda(esquerda + 1);
+    setTotal(atualizaEsquerda + direita);
+  };
+
+  const handleCliqueDireita = () => {
+    setDireita(direita + 1);
+    const atualizaDireita = direita + 1;
+    setTotal(esquerda + atualizaDireita);
+  };
+
   return (
     <div>
-      <Exibir contador={contador} />
-      <Botao onClick={aumentarEmUm} texto="mais+" />
-      <Botao onClick={zerarContador} texto="zerar" />
-      <Botao onClick={diminuirEmUm} texto="menos-" />
+      {esquerda}
+      <Botao handleClique={handleCliqueEsquerda} texto="Esquerda" />
+      <Botao handleClique={handleCliqueDireita} texto="Direita" />
+      {direita}
+      <Historico todosOsCliques={todosOsCliques} />
     </div>
   );
 };

@@ -40,6 +40,31 @@ const Total = (props) => {
   );
 };
 
+const Botao = ({ handleClique, texto }) => (
+  <button onClick={handleClique}>{texto}</button>
+);
+
+const Statistics = ({ good, neutral, bad, total, average }) => {
+  if (good.length === 0 || neutral.length === 0 || bad.length === 0) {
+    return (
+      <>
+        <p>No feedback given</p>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <Part part="good" exercises={good} />
+      <Part part="neutral" exercises={neutral} />
+      <Part part="bad" exercises={bad} />
+      <Part part="Total" exercises={total} />
+      <Part part="average" exercises={average} />
+      <Part part="positive" exercises={(good * 10).toFixed(2) + "%"} />
+    </>
+  );
+};
+
 function App() {
   const course = {
     name: "Desenvolvimento de aplicação Half Stack",
@@ -59,21 +84,46 @@ function App() {
     ],
   };
 
+  const [good, setGood] = useState(0);
+  const [neutral, setNeutral] = useState(0);
+  const [bad, setBad] = useState(0);
+  const [total, setTotal] = useState(0);
+  const [average, setAverage] = useState(0);
+
+  const handleGood = () => {
+    setGood(good + 1);
+    setTotal(total + 1);
+    const atualTotal = total + 1;
+    setAverage(atualTotal / 3);
+  };
+
+  const handleNeutral = () => {
+    setNeutral(neutral + 1);
+    setTotal(total + 1);
+    const atualTotal = total + 1;
+    setAverage(atualTotal / 3);
+  };
+
+  const handleBad = () => {
+    setBad(bad + 1);
+    setTotal(total + 1);
+    const atualTotal = total + 1;
+    setAverage(atualTotal / 3);
+  };
+
   return (
     <div>
-      <Header course={course.name} />
-      <Content
-        part1={course.parts[0].name}
-        part2={course.parts[1].name}
-        part3={course.parts[2].name}
-        exercises1={course.parts[0].exercises}
-        exercises2={course.parts[1].exercises}
-        exercises3={course.parts[2].exercises}
-      />
-      <Total
-        exercises1={course.parts[0].exercises}
-        exercises2={course.parts[1].exercises}
-        exercises3={course.parts[2].exercises}
+      <Header course="give feedback" />
+      <Botao handleClique={handleGood} texto="good" />
+      <Botao handleClique={handleNeutral} texto="neutral" />
+      <Botao handleClique={handleBad} texto="bad" />
+      <Header course="statistics" />
+      <Statistics
+        average={average}
+        bad={bad}
+        good={good}
+        neutral={neutral}
+        total={total}
       />
     </div>
   );
