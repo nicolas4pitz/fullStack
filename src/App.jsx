@@ -1,71 +1,44 @@
 import { useState } from "react";
 
-const Header = (props) => {
-  return (
-    <>
-      <h1>{props.course}</h1>
-    </>
-  );
-};
-
-const Content = (props) => {
-  return (
-    <>
-      <Part part={props.part1} exercises={props.exercises1} />
-      <Part part={props.part2} exercises={props.exercises2} />
-      <Part part={props.part3} exercises={props.exercises3} />
-    </>
-  );
-};
-
-const Part = (props) => {
-  return (
-    <>
-      <p>
-        {props.part} {props.exercises}
-      </p>
-    </>
-  );
-};
-
-const Total = (props) => {
-  return (
-    <>
-      <p>
-        Number of exercises{" "}
-        {props.exercises1 + props.exercises2 + props.exercises3}
-      </p>
-    </>
-  );
-};
-
-function App() {
-  const course = "Desenvolvimento de aplicação Half Stack";
-  const part1 = "Fundamentos da biblioteca React";
-  const exercises1 = 10;
-  const part2 = "Usando props para passar dados";
-  const exercises2 = 7;
-  const part3 = "Estado de um componente";
-  const exercises3 = 14;
+const Hello = ({ nome, idade }) => {
+  const anoDeNascimento = () => {
+    const anoDeHoje = new Date().getFullYear();
+    return anoDeHoje - idade;
+  };
 
   return (
     <div>
-      <Header course={course} />
-      <Content
-        part1={part1}
-        part2={part2}
-        part3={part3}
-        exercises1={exercises1}
-        exercises2={exercises2}
-        exercises3={exercises3}
-      />
-      <Total
-        exercises1={exercises1}
-        exercises2={exercises2}
-        exercises3={exercises3}
-      />
+      <p>
+        Olá {nome}, você tem {idade} anos
+      </p>
+      <p>Então, você nasceu provavelmente em {anoDeNascimento()}.</p>
     </div>
   );
-}
+};
+
+// props=argumentos, dentro do componenete lidamos com a nomeclatura de cada
+const Exibir = ({ contador }) => {
+  return <div>{contador}</div>;
+};
+
+const Botao = ({ onClick, texto }) => {
+  return <button onClick={onClick}>{texto}</button>;
+};
+
+const App = () => {
+  const [contador, setContador] = useState(0);
+
+  const aumentarEmUm = () => setContador(contador + 1);
+  const diminuirEmUm = () => setContador(contador - 1);
+  const zerarContador = () => setContador(0);
+  return (
+    <div>
+      <Exibir contador={contador} />
+      <Botao onClick={aumentarEmUm} texto="mais+" />
+      <Botao onClick={zerarContador} texto="zerar" />
+      <Botao onClick={diminuirEmUm} texto="menos-" />
+    </div>
+  );
+};
 
 export default App;
