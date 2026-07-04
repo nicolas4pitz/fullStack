@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Course from "../components/Course";
 
 const Header = (props) => {
   console.log(props);
@@ -66,23 +67,50 @@ const Statistics = ({ good, neutral, bad, total, average }) => {
 };
 
 function App() {
-  const course = {
-    name: "Desenvolvimento de aplicação Half Stack",
-    parts: [
-      {
-        name: "Fundamentos da biblioteca React",
-        exercises: 10,
-      },
-      {
-        name: "Usando props para passar dados",
-        exercises: 7,
-      },
-      {
-        name: "Estado de um componente",
-        exercises: 14,
-      },
-    ],
-  };
+  const courses = [
+    {
+      name: "Half Stack application development",
+      id: 1,
+      parts: [
+        {
+          name: "Fundamentals of React",
+          exercises: 10,
+          id: 1,
+        },
+        {
+          name: "Using props to pass data",
+          exercises: 7,
+          id: 2,
+        },
+        {
+          name: "State of a component",
+          exercises: 14,
+          id: 3,
+        },
+        {
+          name: "Redux",
+          exercises: 11,
+          id: 4,
+        },
+      ],
+    },
+    {
+      name: "Node.js",
+      id: 2,
+      parts: [
+        {
+          name: "Routing",
+          exercises: 3,
+          id: 1,
+        },
+        {
+          name: "Middlewares",
+          exercises: 7,
+          id: 2,
+        },
+      ],
+    },
+  ];
 
   const [good, setGood] = useState(0);
   const [neutral, setNeutral] = useState(0);
@@ -113,18 +141,7 @@ function App() {
 
   return (
     <div>
-      <Header course="give feedback" />
-      <Botao handleClique={handleGood} texto="good" />
-      <Botao handleClique={handleNeutral} texto="neutral" />
-      <Botao handleClique={handleBad} texto="bad" />
-      <Header course="statistics" />
-      <Statistics
-        average={average}
-        bad={bad}
-        good={good}
-        neutral={neutral}
-        total={total}
-      />
+      <Course course={courses} />
     </div>
   );
 }

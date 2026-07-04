@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Note from "./components/Note";
 
 const Hello = ({ nome, idade }) => {
   const anoDeNascimento = () => {
@@ -29,32 +30,15 @@ const Botao = ({ handleClique, texto }) => (
   <button onClick={handleClique}>{texto}</button>
 );
 
-const App = () => {
-  const [esquerda, setEsquerda] = useState(0);
-  const [direita, setDireita] = useState(0);
-  const [todosOsCliques, setTodos] = useState([]);
-  const [total, setTotal] = useState(0);
-
-  const handleCliqueEsquerda = () => {
-    setTodos(todosOsCliques.concat("E"));
-    const atualizaEsquerda = esquerda + 1;
-    setEsquerda(esquerda + 1);
-    setTotal(atualizaEsquerda + direita);
-  };
-
-  const handleCliqueDireita = () => {
-    setDireita(direita + 1);
-    const atualizaDireita = direita + 1;
-    setTotal(esquerda + atualizaDireita);
-  };
-
+const App = ({ notes }) => {
   return (
     <div>
-      {esquerda}
-      <Botao handleClique={handleCliqueEsquerda} texto="Esquerda" />
-      <Botao handleClique={handleCliqueDireita} texto="Direita" />
-      {direita}
-      <Historico todosOsCliques={todosOsCliques} />
+      <h1>Notes</h1>
+      <ul>
+        {notes.map((note) => (
+          <Note key={note.id} note={note} />
+        ))}
+      </ul>
     </div>
   );
 };
