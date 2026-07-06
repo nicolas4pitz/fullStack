@@ -2,7 +2,7 @@ import { useState } from "react";
 import Course from "../components/Course";
 
 const Header = (props) => {
-  console.log(props);
+  //console.log(props);
   return (
     <>
       <h1>{props.course}</h1>
@@ -112,6 +112,18 @@ function App() {
     },
   ];
 
+  //Fica Aqui nesse componente------------------------
+  const [persons, setPersons] = useState([
+    { name: "Arto Hellas", number: "040-123456", id: 1 },
+    { name: "Ada Lovelace", number: "39-44-5323523", id: 2 },
+    { name: "Dan Abramov", number: "12-43-234345", id: 3 },
+    { name: "Mary Poppendieck", number: "39-23-6423122", id: 4 },
+  ]);
+  const [newName, setNewName] = useState("");
+  const [newPhone, setNewPhone] = useState("");
+  const [filterPhone, setFilterPhone] = useState("");
+  //-------------------------------
+
   const [good, setGood] = useState(0);
   const [neutral, setNeutral] = useState(0);
   const [bad, setBad] = useState(0);
@@ -139,8 +151,66 @@ function App() {
     setAverage(atualTotal / 3);
   };
 
+  const handleNameChange = (event) => {
+    console.log(event.target.value);
+    setNewName(event.target.value);
+  };
+
+  const handlePhoneChange = (event) => {
+    setNewPhone(event.target.value);
+  };
+
+  const handleFilter = (event) => {
+    setFilterPhone(event.target.value);
+  };
+
+  const addNamePhone = (event) => {
+    event.preventDefault();
+    const nameExists = persons.some((person) => person.name === newName);
+
+    if (nameExists) {
+      alert(`${newName} is already added to phonebook`);
+    } else {
+      const newPersona = {
+        name: newName,
+        number: newPhone,
+        id: persons.length + 1,
+      };
+      setPersons(persons.concat(newPersona));
+      setNewName("");
+      setNewPhone("");
+    }
+  };
+
+  const filterList = persons.filter((name) =>
+    name.name.toLowerCase().includes(filterPhone.toLowerCase()),
+  );
+
   return (
     <div>
+      <h2>Phonebook</h2>
+      <div>
+        <p>
+          filter show with <input onChange={handleFilter} value={filterPhone} />
+        </p>
+      </div>
+      <form onSubmit={addNamePhone}>
+        <div>
+          name: <input onChange={handleNameChange} value={newName} />
+        </div>
+        <div>
+          number: <input onChange={handlePhoneChange} value={newPhone} />
+        </div>
+        <div>
+          <button type="submit">add</button>
+        </div>
+      </form>
+      <h2>Numbers</h2>
+      {filterList.map((name) => (
+        <p key={name.id}>
+          {name.name} : {name.number}
+        </p>
+      ))}
       <Course course={courses} />
     </div>
   );
