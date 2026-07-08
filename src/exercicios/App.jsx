@@ -66,6 +66,49 @@ const Statistics = ({ good, neutral, bad, total, average }) => {
   );
 };
 
+const Filter = (props) => {
+  return (
+    <div>
+      <p>
+        filter show with{" "}
+        <input onChange={props.handleFilter} value={props.filterPhone} />
+      </p>
+    </div>
+  );
+};
+
+const PersonForm = (props) => {
+  return (
+    <div>
+      <form onSubmit={props.addNamePhone}>
+        <div>
+          name:{" "}
+          <input onChange={props.handleNameChange} value={props.newName} />
+        </div>
+        <div>
+          number:{" "}
+          <input onChange={props.handlePhoneChange} value={props.newPhone} />
+        </div>
+        <div>
+          <button type="submit">add</button>
+        </div>
+      </form>
+    </div>
+  );
+};
+
+const Persons = (props) => {
+  return (
+    <div>
+      {props.filterList.map((name) => (
+        <p key={name.id}>
+          {name.name} : {name.number}
+        </p>
+      ))}
+    </div>
+  );
+};
+
 function App() {
   const courses = [
     {
@@ -189,28 +232,22 @@ function App() {
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-        <p>
-          filter show with <input onChange={handleFilter} value={filterPhone} />
-        </p>
-      </div>
-      <form onSubmit={addNamePhone}>
-        <div>
-          name: <input onChange={handleNameChange} value={newName} />
-        </div>
-        <div>
-          number: <input onChange={handlePhoneChange} value={newPhone} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <Filter filterPhone={filterPhone} handleFilter={handleFilter} />
+
+      <h3>Add a new</h3>
+
+      <PersonForm
+        addNamePhone={addNamePhone}
+        handleNameChange={handleNameChange}
+        handlePhoneChange={handlePhoneChange}
+        newName={newName}
+        newPhone={newPhone}
+      />
+
       <h2>Numbers</h2>
-      {filterList.map((name) => (
-        <p key={name.id}>
-          {name.name} : {name.number}
-        </p>
-      ))}
+
+      <Persons filterList={filterList} />
+
       <Course course={courses} />
     </div>
   );
