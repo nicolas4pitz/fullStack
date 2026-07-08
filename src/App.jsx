@@ -1,5 +1,7 @@
 import { useState } from "react";
 import Note from "./components/Note";
+import { useEffect } from "react";
+import axios from "axios";
 
 const Hello = ({ nome, idade }) => {
   const anoDeNascimento = () => {
@@ -31,11 +33,23 @@ const Botao = ({ handleClique, texto }) => (
 );
 
 const App = (props) => {
-  const [notes, setNotes] = useState(props.notes);
+  const [notes, setNotes] = useState([]);
   const [newNote, setNewNote] = useState("a new note...");
   const [showAll, setShowAll] = useState(true);
 
   const notesToShow = showAll ? notes : notes.filter((note) => note.important);
+
+  const hook = () => {
+    console.log("efeito ");
+    axios.get("http://localhost:3001/notes").then((response) => {
+      console.log("fullfiled");
+      setNotes(response.data);
+    });
+  };
+
+  useEffect(hook, []);
+
+  console.log("render ", notes.length, "notes");
 
   const addNote = (event) => {
     event.preventDefault();
