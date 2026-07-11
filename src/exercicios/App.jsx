@@ -2,6 +2,8 @@ import { useState } from "react";
 import Course from "../components/Course";
 import { useEffect } from "react";
 import axios from "axios";
+import personsService from '../services/persons'
+import Notification from "./Notification";
 
 const Header = (props) => {
   //console.log(props);
@@ -43,7 +45,7 @@ const Total = (props) => {
   );
 };
 
-const Botao = ({ handleClique, texto }) => (
+const Botao = ({ handleClique, texto, person }) => (
   <button onClick={handleClique}>{texto}</button>
 );
 
@@ -105,7 +107,7 @@ const Persons = (props) => {
       {props.filterList.map((name) => (
         <p key={name.id}>
           {name.name} : {name.number}
-        </p>
+          <Botao handleClique={() => props.handleDelete(name.id, name.name)} texto={props.texto} person={name} /></p>
       ))}
     </div>
   );
@@ -162,6 +164,7 @@ function App() {
   const [newName, setNewName] = useState("");
   const [newPhone, setNewPhone] = useState("");
   const [filterPhone, setFilterPhone] = useState("");
+  const [newPerMessage, setNewPerMessage] = useState("");
   //-------------------------------
 
   //Desestruturacao em uma funcao
@@ -214,6 +217,17 @@ function App() {
     setFilterPhone(event.target.value);
   };
 
+  const handleDelete = (id, name) => {
+
+    if (window.confirm(`Delete ${name}?`)) {
+      personsService.remove(id).then(() => {
+        setPersons(persons.filter(person => person.id !== id));
+      }).catch(error => {
+        alert(`The person '${name}' was already deleted from server`)
+      })
+    }
+  }
+
   const addNamePhone = (event) => {
     event.preventDefault();
     const nameExists = persons.some((person) => person.name === newName);
@@ -226,9 +240,16 @@ function App() {
         number: newPhone,
         id: persons.length + 1,
       };
-      setPersons(persons.concat(newPersona));
-      setNewName("");
-      setNewPhone("");
+
+      personsService.create(newPersona).then(returnedNote => {
+        setNewPerMessage(`Added ${newName}`)
+        setTimeout(() => {
+          setNewPerMessage("")
+        }, 5000)
+        setPersons(persons.concat(returnedNote));
+        setNewName("");
+        setNewPhone("");
+      })
     }
   };
 
@@ -243,6 +264,7 @@ function App() {
 
       <h3>Add a new</h3>
 
+      <Notification message={newPerMessage}/>
       <PersonForm
         addNamePhone={addNamePhone}
         handleNameChange={handleNameChange}
@@ -253,9 +275,9 @@ function App() {
 
       <h2>Numbers</h2>
 
-      <Persons filterList={filterList} />
+      <Persons filterList={filterList} handleDelete={handleDelete} texto={'delete'} />
 
-      <Course course={courses} />
+      {/* <Course course={courses} />*/}
     </div>
   );
 }
