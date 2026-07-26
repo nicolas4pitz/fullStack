@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:3001/api/notes'
+const baseUrl = '/api/notes'
 
 // Axios nao e servidor, ele e apenas um facilitador de requisições REST ----------------------
 
