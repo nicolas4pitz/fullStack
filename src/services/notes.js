@@ -1,18 +1,20 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:3001/notes'
+const baseUrl = 'http://localhost:3001/api/notes'
+
+// Axios nao e servidor, ele e apenas um facilitador de requisições REST ----------------------
 
 const getAll = () => {
-  const request = axios.get(baseUrl)
+  const request = axios.get(baseUrl) // Axios faz a requisicao para o server
   return request.then(response => response.data)
 }
 
 const create = newObject => {
-  const request = axios.post(baseUrl, newObject)
+  const request = axios.post(baseUrl, newObject) // Axios faz a requisicao para o server
   return request.then(response => response.data)
 }
 
 const update = (id, newObject) => {
-  const request = axios.put(`${baseUrl}/${id}`, newObject)
+  const request = axios.put(`${baseUrl}/${id}`, newObject) // Axios faz a requisicao para o server
   return request.then(response => response.data)
 }
 

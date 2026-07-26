@@ -1,7 +1,6 @@
 import { useState } from "react";
 import Note from "./components/Note";
 import { useEffect } from "react";
-import axios from "axios";
 import noteService from './services/notes'
 import Notification from "./components/Notification";
 
