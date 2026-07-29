@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseUrl = '/api/notes'
+const baseUrl = `${import.meta.env.VITE_BACKEND_URL}/api/notes`
 
 // Axios nao e servidor, ele e apenas um facilitador de requisições REST ----------------------
 

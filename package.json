@@ -9,8 +9,7 @@
     "lint": "oxlint",
     "json": "json-server --port 3001 --watch db.json",
     "preview": "vite preview",
-    "server": "node --watch src/index.js",
-    "start": "node index.js"
+    "server": "node --watch src/index.js"
   },
   "dependencies": {
     "axios": "^1.18.1",
